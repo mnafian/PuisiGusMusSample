@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal|center_vertical"
-    android:background="@color/primaryColorDark">
+    android:background="@android:color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -14,6 +14,8 @@
         app:border_color="@color/accentColor"/>
 
     <TextView
+        android:id="@+id/gus_mustx_1"
+        style="@style/Text"
         android:layout_marginTop="20dp"
         android:textColor="@color/accentColor"
         android:textSize="20sp"
@@ -22,6 +24,8 @@
         android:text="Kumpulan Puisi"/>
 
     <TextView
+        android:id="@+id/gus_mustx"
+        style="@style/Text"
         android:layout_marginTop="5dp"
         android:textColor="@color/accentColor"
         android:textSize="40sp"
