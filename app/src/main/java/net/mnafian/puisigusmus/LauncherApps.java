@@ -22,12 +22,12 @@ public class LauncherApps extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.puisi_splashscreen);
 
-        Typeface blockFonts = Typeface.createFromAsset(getAssets(),"CarterOne.ttf");
-        TextView txtSampleTxt = (TextView) findViewById(R.id.gus_mustx);
-        txtSampleTxt.setTypeface(blockFonts);
-
-        TextView txtSampleTxt1 = (TextView) findViewById(R.id.gus_mustx_1);
-        txtSampleTxt1.setTypeface(blockFonts);
+//        Typeface blockFonts = Typeface.createFromAsset(getAssets(), "CarterOne.ttf");
+//        TextView txtSampleTxt = (TextView) findViewById(R.id.gus_mustx);
+////      txtSampleTxt.setTypeface(blockFonts);
+//
+//        TextView txtSampleTxt1 = (TextView) findViewById(R.id.gus_mustx_1);
+////      txtSampleTxt1.setTypeface(blockFonts);
 
         new Handler().postDelayed(new Runnable() {
             @Override

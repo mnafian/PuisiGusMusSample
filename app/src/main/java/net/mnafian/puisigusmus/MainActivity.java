@@ -1,6 +1,10 @@
 package net.mnafian.puisigusmus;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -12,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
@@ -34,11 +40,13 @@ import jp.wasabeef.recyclerview.animators.adapters.SlideInBottomAnimationAdapter
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mPlayListPuisi;
+    private RelativeLayout mNoConnection;
 
-    private List<PuisiItem> puisiList = new ArrayList<PuisiItem>();
+    private List<PuisiItem> puisiList = new ArrayList<>();
 
     private OkHttpClient clientRest = new OkHttpClient();
     private LoadDataPuisiFeed newsTask;
+    private NetworkChangeReceiver receiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +62,36 @@ public class MainActivity extends AppCompatActivity {
         llm.setOrientation(LinearLayoutManager.VERTICAL);
         mPlayListPuisi.setLayoutManager(llm);
 
-        if (!StaticClass.checkConnection(this)) {
-            Snackbar.make(mPlayListPuisi, "No Connection Found", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        } else {
-            newsTask = (LoadDataPuisiFeed) new LoadDataPuisiFeed().execute();
+        mNoConnection = (RelativeLayout) findViewById(R.id.puisi_no_connection);
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        receiver = new NetworkChangeReceiver();
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
+
+    public class NetworkChangeReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            if (!StaticClass.checkConnection(context)) {
+                Snackbar.make(mPlayListPuisi, "No Connection Found", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                mNoConnection.setVisibility(View.VISIBLE);
+                mPlayListPuisi.setVisibility(View.INVISIBLE);
+            } else {
+                mNoConnection.setVisibility(View.INVISIBLE);
+                mPlayListPuisi.setVisibility(View.VISIBLE);
+                if (puisiList.size()>0){
+                    puisiList.clear();
+                }
+                newsTask = (LoadDataPuisiFeed) new LoadDataPuisiFeed().execute();
+            }
         }
     }
 
